@@ -94,13 +94,9 @@ AUDITORIES=['1-5',
 conn = sqlite3.connect("exl.db")
 
 cursor = conn.cursor()
-cursor.execute("""CREATE TABLE IF NOT EXISTS users(
-   AUDITORIES TEXT,
-   PREPODS TEXT,
-   GROUPS TEXT);
-""")
-for i in GROUPS:
-    pass
+res = [tuple(GROUPS[i:i + 1]) for i in range(0, len(GROUPS), 1)]
+print(res)
+cursor.executemany("insert into GROUPS values(?);",res)    
 conn.commit()
 
 
