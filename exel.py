@@ -4,19 +4,20 @@ import sys
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
+
  
- 
+layout = QHBoxLayout()
 class Table(QWidget):
     def __init__(self):
         super(Table, self).__init__()
         self.initUI()
- 
+    
     def initUI(self):
                  # Установить заголовок и начальный размер
         self.setWindowTitle('QTableWidget demo')
         self.resize(500, 300)
-
-        layout = QHBoxLayout()
+        
+        
         self.tableWidget = QTableWidget(43, 52)
         #ширина ячеек
         for i in range(43):
@@ -25,10 +26,17 @@ class Table(QWidget):
         self.tableWidget.setHorizontalHeaderLabels (['Группы', 'пол', 'вес'])
         thing1 = 1  
         #color cells
+        weekdays = ['п\nо\nн\nе\nд\nе\nл\nь\nн\nи\nк','в\nт\nо\nр\nн\nи\nк','с\nр\nе\nд\nа','ч\nе\nт\nв\nе\nр\nг','п\nя\nт\nн\nи\nц\nа','С\nу\nб\nб\nо\nт\nа']        
         for i in range(6):
             self.tableWidget.setSpan(thing1,0,7,1)
             self.tableWidget.setItem(thing1, 0, QTableWidgetItem())
-            self.tableWidget.item(thing1, 0).setBackground(QColor(100,100,150))    
+            self.tableWidget.setItem(thing1, 0, QTableWidgetItem())
+            self.tableWidget.item(thing1,0).setText(weekdays[i])
+
+           
+           
+     
+            self.tableWidget.item(thing1, 0).setBackground(QColor(0,160,0))    
             thing1 += 7
         #second column color and №
         for i in range(2,43,7):
@@ -37,15 +45,16 @@ class Table(QWidget):
                 self.tableWidget.item(i+j-1,1).setText(str(j+1))
         for i in range(52):
             self.tableWidget.setItem(0, i, QTableWidgetItem())
-            self.tableWidget.item(0, i).setBackground(QColor(100,100,150))    
-            
-            
+            self.tableWidget.item(0, i).setBackground(QColor(220,0,0))    
+        
+        
+
                      # Установить горизонтальное автоматическое масштабирование окна заполнения
         self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
  
  
                  # Разрешить щелчок правой кнопкой мыши для создания меню
-        self.tableWidget.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.tableWidget.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
                  # Привязать контекстное меню к функции слота generateMenu
         self.tableWidget.customContextMenuRequested.connect(self.generateMenu)
         
@@ -55,30 +64,24 @@ class Table(QWidget):
  
     def generateMenu(self, pos):
                  # Рассчитать, сколько существует данных, по умолчанию -1,
-        row_num = -1
-        for i in self.tableWidget.selectionModel().selection().indexes():
-            row_num = i.row()
  
                  # В таблице только две допустимые данные, поэтому всплывающее меню с правой кнопкой мыши поддерживают только первые две строки
-        if row_num < 2:
-            menu = QMenu()
-            item1 = menu.addAction (u'Option one ')
-            item2 = menu.addAction (u'Option 2 ')
-            item3 = menu.addAction (u'Option 3 ')
-            action = menu.exec_(self.tableWidget.mapToGlobal(pos))
+        
+        menu = QMenu()
+        item1 = menu.addAction (u'копировать')
+        item2 = menu.addAction (u'вставить')
+        item3 = menu.addAction (u'закрыть')
+        action = menu.exec_(self.tableWidget.mapToGlobal(pos))
                          # Показать текст данных выбранной строки
-            if action == item1:
-                                 print ('Вы выбрали первый вариант, текущее содержание текста строки:', self.tableWidget.item (row_num, 0) .text (),
-                      self.tableWidget.item(row_num, 1).text(),
-                      self.tableWidget.item(row_num, 2).text())
-            if action == item2:
-                                 print ('Вы выбрали второй вариант, текущее содержание текста строки:', self.tableWidget.item (row_num, 0) .text (),
-                      self.tableWidget.item(row_num, 1).text(),
-                      self.tableWidget.item(row_num, 2).text())
-            if action == item3:
-                                 print ('Вы выбрали третий вариант, текущее содержание текста строки:', self.tableWidget.item (row_num, 0) .text (),
-                      self.tableWidget.item(row_num, 1).text(),
-                      self.tableWidget.item(row_num, 2).text())
+        if action == item1:
+                print ('Вы выбрали первый вариант, текущее содержание текста строки:', ),
+                self.tableWidget.selectionModel().selection().indexes()
+
+        if action == item2:
+                                 print ('Вы выбрали второй вариант, текущее содержание текста строки:',)
+                     
+        if action == item3:
+                                 print ('Вы выбрали третий вариант, текущее содержание текста строки:', ),
  
 if __name__ == '__main__':
     app = QApplication(sys.argv)
