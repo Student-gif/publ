@@ -17,21 +17,29 @@ class Table(QWidget):
         self.resize(500, 300)
 
         layout = QHBoxLayout()
-        self.tableWidget = QTableWidget(42, 52)
-        for i in range(42):
+        self.tableWidget = QTableWidget(43, 52)
+        #ширина ячеек
+        for i in range(43):
             self.tableWidget.setRowHeight(i,5)   
                  # Установить горизонтальный заголовок таблицы
         self.tableWidget.setHorizontalHeaderLabels (['Группы', 'пол', 'вес'])
-        thing1 = 0  
+        thing1 = 1  
+        #color cells
         for i in range(6):
             self.tableWidget.setSpan(thing1,0,7,1)
             self.tableWidget.setItem(thing1, 0, QTableWidgetItem())
             self.tableWidget.item(thing1, 0).setBackground(QColor(100,100,150))    
             thing1 += 7
-        for i in range(1,43,7):
+        #second column color and №
+        for i in range(2,43,7):
             for j in range(0,7):
                 self.tableWidget.setItem(i+j-1, 1, QTableWidgetItem())
                 self.tableWidget.item(i+j-1,1).setText(str(j+1))
+        for i in range(52):
+            self.tableWidget.setItem(0, i, QTableWidgetItem())
+            self.tableWidget.item(0, i).setBackground(QColor(100,100,150))    
+            
+            
                      # Установить горизонтальное автоматическое масштабирование окна заполнения
         self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
  
