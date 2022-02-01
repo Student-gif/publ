@@ -1,9 +1,10 @@
+from CopyPaste import QListensW,lessons
 
 import sys
-
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
+from PyQt5.Qt import *
 
  
 layout = QHBoxLayout()
@@ -21,23 +22,27 @@ class Table(QWidget):
         self.tableWidget = QTableWidget(43, 52)
         #ширина ячеек
         for i in range(43):
-            self.tableWidget.setRowHeight(i,5)   
+            self.tableWidget.setRowHeight(i,80)
+
                  # Установить горизонтальный заголовок таблицы
-        self.tableWidget.setHorizontalHeaderLabels (['Группы', 'пол', 'вес'])
+        for i in range(51):
+            self.tableWidget.setColumnWidth(i,80)
+
         thing1 = 1  
         #color cells
         weekdays = ['п\nо\nн\nе\nд\nе\nл\nь\nн\nи\nк','в\nт\nо\nр\nн\nи\nк','с\nр\nе\nд\nа','ч\nе\nт\nв\nе\nр\nг','п\nя\nт\nн\nи\nц\nа','С\nу\nб\nб\nо\nт\nа']        
         for i in range(6):
             self.tableWidget.setSpan(thing1,0,7,1)
             self.tableWidget.setItem(thing1, 0, QTableWidgetItem())
-            self.tableWidget.setItem(thing1, 0, QTableWidgetItem())
             self.tableWidget.item(thing1,0).setText(weekdays[i])
+            self.tableWidget.item(thing1,0).setTextAlignment(Qt.AlignVCenter|Qt.AlignCenter)
+            self.tableWidget.item(thing1,0).setFont(QFont("Arial", 16))
+            self.tableWidget.item(thing1, 0).setBackground(QColor(0,160,0))
 
-           
-           
-     
-            self.tableWidget.item(thing1, 0).setBackground(QColor(0,160,0))    
+                
             thing1 += 7
+        self.tableWidget.setCellWidget(3,3,QListensW(lessons(teacher='bb',week=-1,weelday=-1,num=-1,auditory="das",teacherId=-1,lesson='bb')))
+        
         #second column color and №
         for i in range(2,43,7):
             for j in range(0,7):
@@ -45,12 +50,8 @@ class Table(QWidget):
                 self.tableWidget.item(i+j-1,1).setText(str(j+1))
         for i in range(52):
             self.tableWidget.setItem(0, i, QTableWidgetItem())
-            self.tableWidget.item(0, i).setBackground(QColor(220,0,0))    
-        
-        
-
-                     # Установить горизонтальное автоматическое масштабирование окна заполнения
-        self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+            self.tableWidget.item(0, i).setBackground(QColor(220,0,0)) 
+               
  
  
                  # Разрешить щелчок правой кнопкой мыши для создания меню
