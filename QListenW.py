@@ -8,7 +8,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 
 from Logick import Lessons
-      
+@dataclass      
 class lessonData():
     teacher: str = None
     auditory:str = None
@@ -53,7 +53,6 @@ class QListensW(QWidget):
         lay.addWidget(self.lineEditTeacher)
         lay.addWidget(self.lineEditLesson)
         lay.addWidget(self.lineEditAuditory)
-        
 
         self.lineEditLesson.returnPressed.connect(self.CustomEventEnter)
         self.lineEditTeacher.returnPressed.connect(self.CustomEventEnter)
@@ -64,7 +63,3 @@ class QListensW(QWidget):
         self.staticData.auditory = self.lineEditAuditory.text()
         self.staticData.lesson = self.lineEditLesson.text()
         self.staticData.teacher = self.lineEditTeacher.text()
-        
-        
-        
-        

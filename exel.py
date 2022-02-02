@@ -130,7 +130,7 @@ class Table(QWidget):
 
         if action == item2:
             print ('Вы выбрали второй вариант, текущее содержание текста строки:',)
-            self.v = self.tableWidget.setCellWidget(index[0].column(),index[0].row(),self.index2.)
+            self.v = self.tableWidget.setCellWidget(index[0].row(),index[0].column(),QListensW(self.index2.staticData))
             print(self.v)
                                  
                      
