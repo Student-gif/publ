@@ -1,11 +1,14 @@
-from CopyPaste import QListensW,lessons
-
+from tokenize import group
+from QListenW import QListensW,lessonData
+import sqlite3
 import sys
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.Qt import *
-
+from Logick import Prepods
+conn = sqlite3.connect("exl.db")
+cursor = conn.cursor()
  
 layout = QHBoxLayout()
 class Table(QWidget):
@@ -37,20 +40,35 @@ class Table(QWidget):
             self.tableWidget.item(thing1,0).setText(weekdays[i])
             self.tableWidget.item(thing1,0).setTextAlignment(Qt.AlignVCenter|Qt.AlignCenter)
             self.tableWidget.item(thing1,0).setFont(QFont("Arial", 16))
-            self.tableWidget.item(thing1, 0).setBackground(QColor(0,160,0))
-
-                
+            self.tableWidget.item(thing1, 0).setBackground(QColor(0,160,0))      
             thing1 += 7
-        self.tableWidget.setCellWidget(3,3,QListensW(lessons(teacher='bb',week=-1,weelday=-1,num=-1,auditory="das",teacherId=-1,lesson='bb')))
+        for i in range(2,52):
+            for g in range(1,43):
+                self.tableWidget.setCellWidget(g,i,QListensW(lessonData(teacher='Преподователь',auditory='аудитория',lesson='предметc')))
         
         #second column color and №
         for i in range(2,43,7):
             for j in range(0,7):
                 self.tableWidget.setItem(i+j-1, 1, QTableWidgetItem())
                 self.tableWidget.item(i+j-1,1).setText(str(j+1))
-        for i in range(52):
+        c = cursor.execute('SELECT  * FROM GROUPS')
+        
+        
+        #??????
+        groups = []
+        for j in c:
+            for h in j:
+                groups.append(h)
+
+
+        for i in range(2,52):
             self.tableWidget.setItem(0, i, QTableWidgetItem())
             self.tableWidget.item(0, i).setBackground(QColor(220,0,0)) 
+            self.tableWidget.item(0, i).setText(groups[i-2])
+
+           
+                
+
                
  
  
@@ -72,6 +90,7 @@ class Table(QWidget):
         item1 = menu.addAction (u'копировать')
         item2 = menu.addAction (u'вставить')
         item3 = menu.addAction (u'закрыть')
+        item1 = menu.addAction (u'Внести')
         action = menu.exec_(self.tableWidget.mapToGlobal(pos))
                          # Показать текст данных выбранной строки
         if action == item1:
