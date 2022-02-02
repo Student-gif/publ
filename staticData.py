@@ -1,6 +1,4 @@
-import string
 import sqlite3
-
 g = ' '
 #print(','.join('"'+h.strip().__str__()+'"' for h in g.split('	')))
 GROUPS=["ЧИПфд-01-21","ЧИПфд-02-21","ЧСАфд-01-21","ЧСАфд-02-21","ЧИПфд-01-20","ЧСАфд-01-20","ЧПКфд-01-20","ЧПКфд-02-20","ЧИПфд-01-19","ЧСАфд-01-19","ЧПКфд-01-19","ЧИПфд-01-18","ЧСАфд-01-18","ЧПКфд-01-18","ЧЭБфд-01-21","ЧЭБфд-02-21","ЧЭБфд-01-20","ЧЭБфд-02-20","ЧЭБфд-01-19","ЧФУфд-01-21","ЧФУфд-02-21","ЧФУфд-01-20","ЧФУфд-02-20","ЧФУфд-01-19","ЧФУфд-02-19","ЧФУфд-01-18","ЧФУфд-02-18","ЧСЛфд-01-21","ЧСЛфд-01-20","ЧСЛфд-01-19","ЧСЛфд-01-18","ЧНПфд-01-21","ЧДЗфд-01-21","ЧНПфд-01-20","ЧДЗфд-01-20","ЧНПфд-01-19","ЧДЗфд-01-19","ЧДЗфд-01-18","ЧПВфд-01-21","ЧПВфд-02-21","ЧРРфд-01-21","ЧППфд-01-20","ЧПВфд-01-20","ЧРРфд-01-20","ЧППфд-01-19","ЧПВфд-01-19","ЧРРрд-01-19","ЧППфд-01-18","ЧПВфд-01-18","ЧРРфд-01-18"]
@@ -94,9 +92,14 @@ AUDITORIES=['1-5',
 conn = sqlite3.connect("exl.db")
 
 cursor = conn.cursor()
-res = [tuple(GROUPS[i:i + 1]) for i in range(0, len(GROUPS), 1)]
-print(res)
-cursor.executemany("insert into GROUPS values(?);",res)    
+res = [tuple(PREPODS[i:i + 1]) for i in range(0, len(PREPODS), 1)]
+#print(res)
+#c = cursor.execute('SELECT * FROM GROUPS')
+#c = cursor.execute('SELECT  * FROM AUDITORIES')\
+#cursor.executemany('INSERT INTO PREPODS(IdLesson,IdTeacher,PREPODS) VALUES (null,null,?)',res)
+
+
+#c = cursor.executemany('INSERT INTO AUDITORIES(Auditories,id) VALUES (?,null)',res)
 conn.commit()
 
 
