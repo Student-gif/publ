@@ -102,4 +102,4 @@ res = [tuple(spam[i:i + 1]) for i in range(0, len(spam), 1)]
 cursor.executemany('INSERT INTO LESSONS(IdTeacher,IdLesson) VALUES (null,?)',res)
 
 #c = cursor.executemany('INSERT INTO AUDITORIES(Auditories,id) VALUES (?,null)',res)
-conn.commit()
+#conn.commit()
