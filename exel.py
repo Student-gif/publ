@@ -46,8 +46,8 @@ class Table(QWidget):
             self.tableWidget.item(thing1, 0).setBackground(QColor(0,160,0))      
             thing1 += 7
         #присвоение табличного виджета
-    
-
+        
+        #TODO счётчик дней недели и номера пары
         for i in range(2,52):
 
             for g in range(1,43):
@@ -64,44 +64,28 @@ class Table(QWidget):
                 self.tableWidget.item(i+j-1,1).setTextAlignment(Qt.AlignVCenter|Qt.AlignCenter)
         #распаковка данных Аудитории с бд  
         h=[x[0] for x in Logick.Auditories]
-  
-
-           
-
-
+        #конфигурация виджетов аудиторий
         for i in range(2,len(h)):
             self.tableWidget.setItem(0, i, QTableWidgetItem())
             self.tableWidget.item(0, i).setBackground(QColor(220,0,0)) 
             self.tableWidget.item(0, i).setText(h[i-2])
-
-           
-                
-
-               
- 
- 
                  # Разрешить щелчок правой кнопкой мыши для создания меню
         self.tableWidget.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
                  # Привязать контекстное меню к функции слота generateMenu
         self.tableWidget.customContextMenuRequested.connect(self.generateMenu)
-        
+        #инициализация таблицы
         layout.addWidget(self.tableWidget)
         self.setLayout(layout)
-        
- 
+    
     def generateMenu(self, pos):
-                 # Рассчитать, сколько существует данных, по умолчанию -1,
- 
-                 # В таблице только две допустимые данные, поэтому всплывающее меню с правой кнопкой мыши поддерживают только первые две строки
-        
+    
         menu = QMenu()
         item1 = menu.addAction (u'копировать')
         item2 = menu.addAction (u'вставить')
         item3 = menu.addAction (u'закрыть')
         action = menu.exec_(self.tableWidget.mapToGlobal(pos))
                          # Показать текст данных выбранной строки
-
-        
+        # копипаста 
         index = self.tableWidget.selectedIndexes()
         if action == item1:
             
@@ -112,8 +96,6 @@ class Table(QWidget):
             win32clipboard.EmptyClipboard()
             win32clipboard.SetClipboardText(data)
             win32clipboard.CloseClipboard()
-                
-
 
 
         if action == item2:
@@ -126,8 +108,6 @@ class Table(QWidget):
             
             w=self.tableWidget.cellWidget(index[0].row(),index[0].column())
             w.update(data)
-            
-                                 
                      
         if action == item3:
             print ('Вы выбрали третий вариант, текущее содержание текста строки:', )
