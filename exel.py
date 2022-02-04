@@ -1,8 +1,5 @@
-
-
 import os
-from re import I
-
+import win32clipboard
 from QListenW import QListensW,lessonData
 import sqlite3
 import sys
@@ -10,8 +7,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.Qt import *
-conn = sqlite3.connect("exl.db")
-cursor = conn.cursor()
+import Logick
  
 layout = QHBoxLayout()
 class Table(QWidget):
@@ -21,18 +17,18 @@ class Table(QWidget):
     
     def initUI(self):
                  # Установить заголовок и начальный размер
-        self.setWindowTitle('QTableWidget demo')
-        self.resize(500, 300)
+        self.setWindowTitle('Ядро Расписание')
         
         
-        self.tableWidget = QTableWidget(43, 52)
+        self.tableWidget = QTableWidget(43, len(Logick.Auditories))
         #ширина ячеек
         for i in range(43):
             self.tableWidget.setRowHeight(i,80)
 
-                 # Установить горизонтальный заголовок таблицы
+        # Установить горизонтальный заголовок таблицы
         for i in range(2,52):
             self.tableWidget.setColumnWidth(i,80)
+        # отрисовка окна индикации
         self.tableWidget.setColumnWidth(1,60)
         self.tableWidget.setColumnWidth(0,40)
         self.tableWidget.setSpan(0,0,1,2)
@@ -50,32 +46,33 @@ class Table(QWidget):
             self.tableWidget.item(thing1, 0).setBackground(QColor(0,160,0))      
             thing1 += 7
         #присвоение табличного виджета
+    
 
         for i in range(2,52):
+
             for g in range(1,43):
+               
                 self.tableWidget.setCellWidget(g,i,QListensW(lessonData()))
+
         
-        #second column color and №
+        #Конфигурации столбца с занятиями 
         for i in range(2,43,7):
             for j in range(0,7):
                 
                 self.tableWidget.setItem(i+j-1, 1, QTableWidgetItem())
                 self.tableWidget.item(i+j-1,1).setText(str(j+1))
                 self.tableWidget.item(i+j-1,1).setTextAlignment(Qt.AlignVCenter|Qt.AlignCenter)
-        c = cursor.execute('SELECT  * FROM GROUPS')
-        
-        
-        #??????
-        groups = []
-        for j in c:
-            for h in j:
-                groups.append(h)
+        #распаковка данных Аудитории с бд  
+        h=[x[0] for x in Logick.Auditories]
+  
+
+           
 
 
-        for i in range(2,52):
+        for i in range(2,len(h)):
             self.tableWidget.setItem(0, i, QTableWidgetItem())
             self.tableWidget.item(0, i).setBackground(QColor(220,0,0)) 
-            self.tableWidget.item(0, i).setText(groups[i-2])
+            self.tableWidget.item(0, i).setText(h[i-2])
 
            
                 
@@ -108,37 +105,36 @@ class Table(QWidget):
         index = self.tableWidget.selectedIndexes()
         if action == item1:
             
-            self.index2 = self.tableWidget.cellWidget(index[0].row(),index[0].column())
-            
-           
-            
-           
-        #       print ('Вы выбрали первый вариант, текущее содержание текста строки:', ),
-        #       c=self.tableWidget.selectedIndexes()
-        #       if c.__len__()<2:
-        #           print(c[0].column())
-        #           h = QListensW.staticData.auditory
-        #           
-        #           print(h)
-        #       else:
-        #           pass
-
-        
+            #self.indexData = self.tableWidget.cellWidget(index[0].row(),index[0].column())
+            addToClipBoard = self.tableWidget.cellWidget(index[0].row(),index[0].column()).staticData
+            data = addToClipBoard.__str__()
+            win32clipboard.OpenClipboard()
+            win32clipboard.EmptyClipboard()
+            win32clipboard.SetClipboardText(data)
+            win32clipboard.CloseClipboard()
                 
 
 
 
         if action == item2:
             print ('Вы выбрали второй вариант, текущее содержание текста строки:',)
-            self.v = self.tableWidget.setCellWidget(index[0].row(),index[0].column(),QListensW(self.index2.staticData))
-            print(self.v)
+            #self.v = self.tableWidget.setCellWidget(index[0].row(),index[0].column(),QListensW(self.index2.staticData))
+            win32clipboard.OpenClipboard()
+            data = win32clipboard.GetClipboardData()
+            win32clipboard.EmptyClipboard()
+            win32clipboard.CloseClipboard()
+            
+            w=self.tableWidget.cellWidget(index[0].row(),index[0].column())
+            w.update(data)
+            
                                  
                      
         if action == item3:
-                                 print ('Вы выбрали третий вариант, текущее содержание текста строки:', ),
-def addToClipBoard(less:lessonData):
-    command="echo "+less.__str__()+" | click"
-    os.system(command=command)
+            print ('Вы выбрали третий вариант, текущее содержание текста строки:', )
+            w=self.tableWidget.cellWidget(index[0].row(),index[0].column())
+            w.uploadUi()
+
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     example = Table()
