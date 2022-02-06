@@ -1,9 +1,5 @@
-from distutils.command.upload import upload
-from email.headerregistry import Group
-from multiprocessing import Event
-import re
 
-import PyQt5
+from multiprocessing import Event
 from Logick import Lessons,Prepods,Auditories,Groups
 from dataclasses import dataclass
 from PyQt5.QtWidgets import *
@@ -20,15 +16,18 @@ class lessonData():
     weekday: int = -1
     num:int = -1
     teacherId:int = -1
-    
-    def updatedata(self,data):
+    lessonPlace:int = 0
+    def notCopyData(self,lessonPlace):
+        self.lessonPlace = lessonPlace
+        return True
+    def updatecopydata(self,data):
         ar=data.split(';')
         self.teacher=ar[0]
         self.auditory =ar[1]
         self.lesson=ar[2]
         return True
     def __str__(self) -> str:
-        return f'{self.teacher};{self.auditory};{self.lesson};{self.week.__str__()};{self.weekday};{self.num};{self.teacherId}'
+        return f'{self.teacher.__str__()};{self.auditory.__str__()};{self.lesson.__str__()};{self.week.__str__()};{self.weekday.__str__()};{self.num};{self.teacherId};{self.lessonPlace}'
     
 
 
@@ -67,14 +66,15 @@ class QListensW(QWidget):
         self.uploadUi()
 
     def update(self,data):
-        self.staticData.updatedata(data)
+        self.staticData.updatecopydata(data)
         self.uploadUi()
 
     def uploadUi(self):
         self.lineEditTeacher.setText(self.staticData.teacher)
         self.lineEditGroups.setText(self.staticData.auditory)
         self.lineEditLesson.setText(self.staticData.lesson)
-     
+    def makeNotCopyWidget(self,lessonPlace):
+        self.staticData.notCopyData(lessonPlace)      
 
     
     def CustomEventEnter(self):

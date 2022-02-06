@@ -1,32 +1,31 @@
-import os
 import win32clipboard
 from QListenW import QListensW,lessonData
-import sqlite3
 import sys
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.Qt import *
 import Logick
+from checkdata import checkdata
  
 layout = QHBoxLayout()
 class Table(QWidget):
     def __init__(self):
         super(Table, self).__init__()
         self.initUI()
-    
+      
     def initUI(self):
                  # Установить заголовок и начальный размер
         self.setWindowTitle('Ядро Расписание')
         
-        
-        self.tableWidget = QTableWidget(43, len(Logick.Auditories))
+        columns =len(Logick.Auditories)  
+        self.tableWidget = QTableWidget(43,columns)
         #ширина ячеек
         for i in range(43):
             self.tableWidget.setRowHeight(i,80)
 
         # Установить горизонтальный заголовок таблицы
-        for i in range(2,52):
+        for i in range(2,columns):
             self.tableWidget.setColumnWidth(i,80)
         # отрисовка окна индикации
         self.tableWidget.setColumnWidth(1,60)
@@ -35,7 +34,7 @@ class Table(QWidget):
 
 
         thing1 = 1  
-        #color cells
+        # конфигурация колон таблицы
         weekdays = ['п\nо\nн\nе\nд\nе\nл\nь\nн\nи\nк','в\nт\nо\nр\nн\nи\nк','с\nр\nе\nд\nа','ч\nе\nт\nв\nе\nр\nг','п\nя\nт\nн\nи\nц\nа','С\nу\nб\nб\nо\nт\nа']        
         for i in range(6):
             self.tableWidget.setSpan(thing1,0,7,1)
@@ -46,19 +45,25 @@ class Table(QWidget):
             self.tableWidget.item(thing1, 0).setBackground(QColor(0,160,0))      
             thing1 += 7
         #присвоение табличного виджета
-        
+        lessonPlace =1
         #TODO счётчик дней недели и номера пары
-        for i in range(2,52):
-
+        for i in range(2,columns):
+            
+            
             for g in range(1,43):
-               
                 self.tableWidget.setCellWidget(g,i,QListensW(lessonData()))
-
-        
+                lessonPlace+=1
+                if lessonPlace >7:
+                    lessonPlace = 1
+                QListensW.staticData.lessonPlace=lessonPlace
+                print(QListensW.staticData.lessonPlace)
+            
+           
+                
+           
         #Конфигурации столбца с занятиями 
         for i in range(2,43,7):
-            for j in range(0,7):
-                
+            for j in range(0,7):              
                 self.tableWidget.setItem(i+j-1, 1, QTableWidgetItem())
                 self.tableWidget.item(i+j-1,1).setText(str(j+1))
                 self.tableWidget.item(i+j-1,1).setTextAlignment(Qt.AlignVCenter|Qt.AlignCenter)
