@@ -56,7 +56,7 @@ class Table(QWidget):
                 if lessonPlace >7:
                     lessonPlace = 1
                 QListensW.staticData.lessonPlace=lessonPlace
-                print(QListensW.staticData.lessonPlace)
+
             
            
                 
