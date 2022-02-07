@@ -2,6 +2,8 @@
 from multiprocessing import Event
 
 from Logick import *
+
+from Logick import Lessons,Prepods,Auditories,Groups
 from dataclasses import dataclass
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
@@ -67,7 +69,7 @@ class QListensW(QWidget):
 
         self.uploadUi()
     def update(self,data):
-        self.staticData.updateCopydata(data)
+        self.staticData.updateLesson(data)
         self.uploadUi()
 
     def uploadUi(self):
