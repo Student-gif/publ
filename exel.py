@@ -16,6 +16,7 @@ class Table(QWidget):
         self.initUI()
     
     def initUI(self):
+        
                  # Установить заголовок и начальный размер
         self.setWindowTitle('Ядро Расписание')
         
