@@ -16,7 +16,6 @@ class Table(QWidget):
         self.initUI()
     
     def initUI(self):
-        
                  # Установить заголовок и начальный размер
         self.setWindowTitle('Ядро Расписание')
         columns = len(Logick.Auditories)
@@ -52,8 +51,6 @@ class Table(QWidget):
         lessonPlace =-1
         #TODO счётчик дней недели и номера пары
         for i in range(2,columns):
-            
-            
             for g in range(1,43):
                 self.tableWidget.setCellWidget(g,i,QListensW(lessonData()))
                 lessonPlace+=1
