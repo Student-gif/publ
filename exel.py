@@ -19,7 +19,7 @@ class Table(QWidget):
         
                  # Установить заголовок и начальный размер
         self.setWindowTitle('Ядро Расписание')
-        
+        columns = len(Logick.Auditories)
         
         self.tableWidget = QTableWidget(43, len(Logick.Auditories))
         #ширина ячеек
@@ -49,14 +49,18 @@ class Table(QWidget):
             thing1 += 7
         #присвоение табличного виджета
         
+        lessonPlace =-1
         #TODO счётчик дней недели и номера пары
-        for i in range(2,52):
-
+        for i in range(2,columns):
+            
+            
             for g in range(1,43):
-               
                 self.tableWidget.setCellWidget(g,i,QListensW(lessonData()))
-
-        
+                lessonPlace+=1
+                if lessonPlace >7:
+                    lessonPlace = 1
+                QListensW.staticData.lessonPlace=lessonPlace
+              
         #Конфигурации столбца с занятиями 
         for i in range(2,43,7):
             for j in range(0,7):
