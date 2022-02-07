@@ -18,15 +18,15 @@ class Table(QWidget):
     def initUI(self):
                  # Установить заголовок и начальный размер
         self.setWindowTitle('Ядро Расписание')
+        columns =len(Logick.Auditories)  
         
-        
-        self.tableWidget = QTableWidget(43, len(Logick.Auditories))
+        self.tableWidget = QTableWidget(43,columns)
         #ширина ячеек
         for i in range(43):
             self.tableWidget.setRowHeight(i,80)
 
         # Установить горизонтальный заголовок таблицы
-        for i in range(2,52):
+        for i in range(2,columns):
             self.tableWidget.setColumnWidth(i,80)
         # отрисовка окна индикации
         self.tableWidget.setColumnWidth(1,60)
@@ -46,14 +46,15 @@ class Table(QWidget):
             self.tableWidget.item(thing1, 0).setBackground(QColor(0,160,0))      
             thing1 += 7
         #присвоение табличного виджета
-        
+        lessonPlace =1
         #TODO счётчик дней недели и номера пары
-        for i in range(2,52):
-
+        for i in range(2,columns):
             for g in range(1,43):
-               
                 self.tableWidget.setCellWidget(g,i,QListensW(lessonData()))
-
+                lessonPlace+=1
+                if lessonPlace >7:
+                    lessonPlace = 1
+                QListensW.staticData.lessonPlace=lessonPlace
         
         #Конфигурации столбца с занятиями 
         for i in range(2,43,7):
@@ -65,7 +66,7 @@ class Table(QWidget):
         #распаковка данных Аудитории с бд  
         h=[x[0] for x in Logick.Auditories]
         #конфигурация виджетов аудиторий
-        for i in range(2,len(h)):
+        for i in range(2,columns):
             self.tableWidget.setItem(0, i, QTableWidgetItem())
             self.tableWidget.item(0, i).setBackground(QColor(220,0,0)) 
             self.tableWidget.item(0, i).setText(h[i-2])
@@ -82,13 +83,11 @@ class Table(QWidget):
         menu = QMenu()
         item1 = menu.addAction (u'копировать')
         item2 = menu.addAction (u'вставить')
-        item3 = menu.addAction (u'закрыть')
         action = menu.exec_(self.tableWidget.mapToGlobal(pos))
                          # Показать текст данных выбранной строки
         # копипаста 
         index = self.tableWidget.selectedIndexes()
         if action == item1:
-            
             #self.indexData = self.tableWidget.cellWidget(index[0].row(),index[0].column())
             addToClipBoard = self.tableWidget.cellWidget(index[0].row(),index[0].column()).staticData
             data = addToClipBoard.__str__()
@@ -108,13 +107,6 @@ class Table(QWidget):
             
             w=self.tableWidget.cellWidget(index[0].row(),index[0].column())
             w.update(data)
-                     
-        if action == item3:
-            print ('Вы выбрали третий вариант, текущее содержание текста строки:', )
-            w=self.tableWidget.cellWidget(index[0].row(),index[0].column())
-            w.uploadUi()
-
-
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     example = Table()
