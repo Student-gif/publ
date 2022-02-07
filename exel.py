@@ -40,7 +40,8 @@ class Table(QWidget):
         for i in range(6):
             self.tableWidget.setSpan(thing1,0,7,1)
             self.tableWidget.setItem(thing1, 0, QTableWidgetItem())
-            self.tableWidget.item(thing1,0).setText(weekdays[i])
+            self.tableWidget.item(thing1,0).setText(weekdays[i]) 
+            
             self.tableWidget.item(thing1,0).setTextAlignment(Qt.AlignVCenter|Qt.AlignCenter)
             self.tableWidget.item(thing1,0).setFont(QFont("Arial", 16))
             self.tableWidget.item(thing1, 0).setBackground(QColor(0,160,0))      
